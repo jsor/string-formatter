@@ -19,12 +19,7 @@
         }
     },
     "require": {
-        "php": ">=5.3.9"
-    },
-    "require-dev": {
+        "php": ">=5.3.9",
         "jsor/locale-data": "^1.0"
-    },
-    "suggest": {
-        "jsor/locale-data": "For using the NameFormatter"
     }
 }

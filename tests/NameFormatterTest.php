@@ -28,9 +28,7 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
 
         $formatter = new NameFormatter(null);
 
-        $name = $formatter->formatDefault(
-            $values
-        );
+        $name = $formatter->format($values);
 
         $this->assertSame('profession given_name additional_given_names family_names', $name);
     }
@@ -55,12 +53,9 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
             'd' => 2,
         );
 
-        $formatter = new NameFormatter('en_US');
+        $formatter = new NameFormatter('en_US', '%f%F%g%G%l%o%m%M%p%s%S%d%t');
 
-        $name = $formatter->format(
-            '%f%F%g%G%l%o%m%M%p%s%S%d%t',
-            $values
-        );
+        $name = $formatter->format($values);
 
         $parts = array_merge($values, array(
             'd' => 'Mr.',
@@ -90,12 +85,9 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
             'salutation_list_index' => 2,
         );
 
-        $formatter = new NameFormatter('en_US');
+        $formatter = new NameFormatter('en_US', '%f%F%g%G%l%o%m%M%p%s%S%d%t');
 
-        $name = $formatter->format(
-            '%f%F%g%G%l%o%m%M%p%s%S%d%t',
-            $values
-        );
+        $name = $formatter->format($values);
 
         $parts = array_merge($values, array(
             'salutation_list_index' => 'Mr.',
@@ -114,12 +106,9 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
             'd' => 'Custom Salutation',
         );
 
-        $formatter = new NameFormatter('en_US');
+        $formatter = new NameFormatter('en_US', '%d');
 
-        $name = $formatter->format(
-            '%d',
-            $values
-        );
+        $name = $formatter->format($values);
 
         $this->assertSame('Custom Salutation', $name);
     }
@@ -129,11 +118,9 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_keeps_escaped_modulo()
     {
-        $formatter = new NameFormatter('en_US');
+        $formatter = new NameFormatter('en_US', '%%');
 
-        $name = $formatter->format(
-            '%%'
-        );
+        $name = $formatter->format(array());
 
         $this->assertSame('%', $name);
     }
@@ -143,12 +130,9 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_allows_empty_values()
     {
-        $formatter = new NameFormatter('en_US');
+        $formatter = new NameFormatter('en_US', '%f%F%g%G%l%o%m%M%p%s%S%d%t');
 
-        $name = $formatter->format(
-            '%f%F%g%G%l%o%m%M%p%s%S%d%t',
-            array()
-        );
+        $name = $formatter->format(array());
 
         $this->assertSame('', $name);
     }
@@ -158,14 +142,13 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_silenty_ignores_unknown_custom_salutation_lists_index()
     {
-        $formatter = new NameFormatter('en_US');
-
-        $name = $formatter->format(
-            '%d',
-            array(
-                'd' => 10,
-            )
+        $values = array(
+            'd' => 10,
         );
+
+        $formatter = new NameFormatter('en_US', '%d');
+
+        $name = $formatter->format($values);
 
         $this->assertSame('', $name);
     }

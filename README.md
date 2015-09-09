@@ -19,24 +19,56 @@ all available versions.
 NameFormatter
 =============
 
-To use the NameFormatter, you need to install the 
-[`jsor/locale-data`](https://packagist.org/packages/jsor/locale-data) package.
-
-```bash
-composer require jsor/locale-data
-```
-
-### NameFormatter::format
+The NameFormatter formats the appropriate representation of a person’s name for
+a locale by the given name parts.
 
 ```php
-public string NameFormatter::format(string $format[, array $values]);
+use Jsor\NameFormatter;
+
+$nameParts = array(
+    'given_name' => 'John',
+    'family_name' => 'Doe',
+    'salutation_list_index' => 2 // name_mr
+);
+
+$enUsFormatter = new NameFormatter('en_US');
+echo $enUsFormatter->formatDefault($nameParts)."\n";
+
+$deDeFormatter = new NameFormatter('de_DE');
+echo $deDeFormatter->formatDefault($nameParts)."\n";
+
+$zhTwFormatter = new NameFormatter('zh_TW');
+echo $zhTwFormatter->formatDefault($nameParts)."\n";
 ```
 
-Returns the appropriate representation of a person’s name and title as a string
-produced according to the formatting string `$format` and the name parts defined
-by `$values`.
+The above example will output:
+
+```
+Mr. John Doe
+Herr John Doe
+Doe John 先生
+```
+
+A custom pattern can be passed as the second argument to the constructor.
+
+```php
+use Jsor\NameFormatter;
+
+$formatter = new NameFormatter('en_US', '%d%t%g%t%m%t%f');
+echo $formatter->format(array(
+    'given_name' => 'John',
+    'family_name' => 'Doe',
+    'salutation' => 'Mr.',
+));
+```
+
+The above example will output:
+
+```
+Mr. John Doe
+```
  
-The `$format` argument can contain any combination of characters and field
+The pattern argument can contain any combination of characters and field
 descriptors.
 
 The following field descriptor are supported.
@@ -66,16 +98,14 @@ The following field descriptor are supported.
 * `%S`
     Abbreviated salutation, such as "Mr." or "Dr."
 * `%d`
-    Salutation list index for the list passed as third argument 
-    (`$salutationList`).
-    Supports the FDCC-sets conventions, with `1` for the `name_gen`, 
+    Salutation, using the FDCC-sets conventions, with `1` for the `name_gen`, 
     `2` for `name_mr`, `3` for `name_mrs`, `4` for `name_miss`, `5` for `name_ms`.
 * `%t`
     If the preceding field descriptor resulted in an empty string, then the
-    empty string, else a space (or any other string defined in `$values`). 
+    empty string, else a space (or any other string defined in `$nameParts`). 
 
-The array argument `$values` can define a value for each field descriptor.
-The keys can be either the descriptor character or a named key.
+The array argument passed to `format()` can define a value for each field
+descriptor. The keys can be either the descriptor character or a named key.
 
 The following keys are supported.
 
@@ -91,66 +121,6 @@ The following keys are supported.
 * `salutation` or `salutations` or `s` (for `%s`)
 * `abbreviated_salutation` or `abbreviated_salutations` or `S` (for `%S`)
 * `salutation_list_index` or `salutations_list_index` or `d` (for `%d`)
-
-#### Example
-
-```php
-use Jsor\NameFormatter;
-
-$format = '%d%t%g%t%m%t%f';
-$values = array(
-    'given_name' => 'John',
-    'family_name' => 'Doe',
-    'salutation' => 'Mr.',
-);
-
-$formatter = new NameFormatter('en_US');
-echo $formatter->format($format, $values);
-```
-
-The above example will output:
-
-```
-Mr. John Doe
-```
-
-### NameFormatter::formatDefault
-
-```php
-public string NameFormatter::formatDefault([array $values]);
-```
-
-Same as `NameFormatter::format`, but uses a default name format according to the
-locale passed to the NameFormatter constructor.
-
-#### Example
-
-```php
-use Jsor\NameFormatter;
-
-$values = array(
-    'given_name' => 'John',
-    'family_name' => 'Doe',
-    'salutation_list_index' => 2 // name_mr
-);
-
-$enUsFormatter = new NameFormatter('en_US');
-echo $enUsFormatter->formatDefault($values)."\n";
-
-$deDeFormatter = new NameFormatter('de_DE');
-echo $deDeFormatter->formatDefault($values)."\n";
-
-$zhTwFormatter = new NameFormatter('zh_TW');
-echo $zhTwFormatter->formatDefault($values)."\n";
-```
-
-The above example will output:
-
-```
-Mr. John Doe
-Herr John Doe
-Doe John 先生
-```
 
 License
 -------

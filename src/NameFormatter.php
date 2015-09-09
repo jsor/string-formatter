@@ -14,32 +14,32 @@ final class NameFormatter implements FormatterInterface
     private $locale;
     private $stringFormatter;
 
-    public function __construct($locale)
+    public function __construct($locale, $pattern = null)
     {
         $this->locale = $locale;
+        $this->pattern = $pattern;
     }
 
-    public function format($format, array $values = array())
+    public function format(array $values)
     {
         if (null === $this->stringFormatter) {
             $this->stringFormatter = $this->createStringFormatter();
         }
 
-        return $this->stringFormatter->format($format, $values);
-    }
-
-    public function formatDefault(array $values = array())
-    {
-        $data = LocaleData::getInstance()->getNameData($this->locale);
-
-        return $this->format($data['name_fmt'], $values);
+        return $this->stringFormatter->format($values);
     }
 
     private function createStringFormatter()
     {
-        $locale = $this->locale;
+        $locale  = $this->locale;
+        $pattern = $this->pattern;
 
-        return new StringFormatter(array(
+        if (null === $pattern) {
+            $data = LocaleData::getInstance()->getNameData($locale);
+            $pattern = $data['name_fmt'];
+        }
+
+        return new StringFormatter($pattern, array(
             new ValueAliasFieldDescriptor(
                 new SimpleFieldDescriptor('f'),
                 array(

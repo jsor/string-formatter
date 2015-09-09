@@ -9,21 +9,35 @@ use Jsor\StringFormatter\FieldDescriptor\SimpleFieldDescriptor;
 
 final class StringFormatter implements FormatterInterface
 {
+    private $pattern;
     private $fieldDescriptors;
     private $strict;
 
-    public function __construct(array $fieldDescriptors = array(), $strict = false)
-    {
+    public function __construct(
+        $pattern,
+        array $fieldDescriptors = array(),
+        $strict = false
+    ) {
+        $this->pattern = $pattern;
+        $this->strict = $strict;
+
         foreach ($fieldDescriptors as $fieldDescriptor) {
             $this->addFieldDescriptor($fieldDescriptor);
         }
+    }
 
-        $this->strict = $strict;
+    public function withPattern($pattern)
+    {
+        $new = new self($pattern, array(), $this->strict);
+
+        $new->fieldDescriptors = $this->fieldDescriptors;
+
+        return $new;
     }
 
     public function withFieldDescriptor($fieldDescriptor)
     {
-        $new = new self(array(), $this->strict);
+        $new = new self($this->pattern, array(), $this->strict);
 
         $new->fieldDescriptors = $this->fieldDescriptors;
         $new->addFieldDescriptor($fieldDescriptor);
@@ -31,17 +45,17 @@ final class StringFormatter implements FormatterInterface
         return $new;
     }
 
-    public function format($format, array $values = array())
+    public function format(array $values)
     {
-        $format = (string) $format;
+        $pattern = (string) $this->pattern;
         $result = '';
 
         $previousValue = null;
         $previousCharacter = null;
         $previousFormatCharacter = null;
 
-        while ('' !== $format) {
-            if (preg_match('/^%(.{1})/', $format, $matches)) {
+        while ('' !== $pattern) {
+            if (preg_match('/^%(.{1})/', $pattern, $matches)) {
                 $value = $this->handle(
                     $matches[1],
                     new FormatContext(
@@ -57,27 +71,27 @@ final class StringFormatter implements FormatterInterface
                 $previousCharacter = $matches[1];
 
                 $result .= $value;
-                $format = substr($format, 2);
+                $pattern = substr($pattern, 2);
             }
 
             // Single trailing %
-            if ('%' === $format) {
+            if ('%' === $pattern) {
                 break;
             }
 
-            $pos = strpos($format, '%');
+            $pos = strpos($pattern, '%');
 
             // No more %
             if (false === $pos) {
-                $result .= $format;
+                $result .= $pattern;
                 break;
             }
 
             if (0 !== $pos) {
-                $previousFormatCharacter = substr($format, $pos - 1, 1);
+                $previousFormatCharacter = substr($pattern, $pos - 1, 1);
 
-                $result .= substr($format, 0, $pos);
-                $format = substr($format, $pos);
+                $result .= substr($pattern, 0, $pos);
+                $pattern = substr($pattern, $pos);
             }
         }
 

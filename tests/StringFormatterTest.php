@@ -12,11 +12,16 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_is_immutable()
     {
-        $formatter = new StringFormatter();
+        $formatter = new StringFormatter('%a');
 
         $changed = $formatter->withFieldDescriptor('a');
 
         $this->assertNotSame($formatter, $changed);
+
+        $changed2 = $formatter->withPattern('%b');
+
+        $this->assertNotSame($formatter, $changed2);
+        $this->assertNotSame($changed, $changed2);
     }
 
     /**
@@ -24,7 +29,7 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_replaces_field_descriptors()
     {
-        $data = array(
+        $values = array(
             'a' => 'A',
             'b' => 'B',
             'c' => 'C',
@@ -33,14 +38,14 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
             'F' => 'f',
         );
 
-        $formatter = new StringFormatter(array_keys($data));
-
-        $string = $formatter->format(
+        $formatter = new StringFormatter(
             '%a %b %c %D %E %F',
-            $data
+            array_keys($values)
         );
 
-        $this->assertSame(implode(' ', $data), $string);
+        $string = $formatter->format($values);
+
+        $this->assertSame(implode(' ', $values), $string);
     }
 
     /**
@@ -48,12 +53,9 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_silently_removes_unknown_fields_by_default()
     {
-        $formatter = new StringFormatter();
+        $formatter = new StringFormatter('%u');
 
-        $string = $formatter->format(
-            '%u',
-            array()
-        );
+        $string = $formatter->format(array());
 
         $this->assertSame('', $string);
     }
@@ -63,12 +65,9 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_does_not_escape_modulo_by_default()
     {
-        $formatter = new StringFormatter();
+        $formatter = new StringFormatter('%%');
 
-        $string = $formatter->format(
-            '%%',
-            array()
-        );
+        $string = $formatter->format(array());
 
         $this->assertSame('', $string);
     }
@@ -78,12 +77,9 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_allows_empty_pattern()
     {
-        $formatter = new StringFormatter();
+        $formatter = new StringFormatter('');
 
-        $string = $formatter->format(
-            '',
-            array()
-        );
+        $string = $formatter->format(array());
 
         $this->assertSame('', $string);
     }
@@ -94,11 +90,11 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_throws_for_invalid_field_descriptor_character()
     {
-        $formatter = new StringFormatter(array(
+        $formatter = new StringFormatter('', array(
             null,
         ));
 
-        $formatter->format('');
+        $formatter->format(array());
     }
 
     /**
@@ -107,11 +103,11 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_throws_for_too_long_field_descriptor_character()
     {
-        $formatter = new StringFormatter(array(
+        $formatter = new StringFormatter('', array(
             'ab',
         ));
 
-        $formatter->format('');
+        $formatter->format(array());
     }
 
     /**
@@ -120,9 +116,9 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_throws_for_missing_field_descriptor_in_strict_mode()
     {
-        $formatter = new StringFormatter(array(), true);
+        $formatter = new StringFormatter('%a', array(), true);
 
-        $formatter->format('%a');
+        $formatter->format(array());
     }
 
     /**
@@ -131,11 +127,11 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_throws_for_missing_required_field_value()
     {
-        $formatter = new StringFormatter(array(
+        $formatter = new StringFormatter('%a', array(
             new RequiredValueFieldDescriptor(new SimpleFieldDescriptor('a'))
         ), true);
 
-        $formatter->format('%a');
+        $formatter->format(array());
     }
 
     /**
@@ -143,11 +139,11 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_passes_when_required_field_value_is_provided()
     {
-        $formatter = new StringFormatter(array(
+        $formatter = new StringFormatter('%a', array(
             new RequiredValueFieldDescriptor(new SimpleFieldDescriptor('a'))
         ), true);
 
-        $string = $formatter->format('%a', array('a' => 'a'));
+        $string = $formatter->format(array('a' => 'a'));
 
         $this->assertSame('a', $string);
     }
@@ -158,9 +154,9 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_handles_unusual_formats($format, $expected)
     {
-        $formatter = new StringFormatter();
+        $formatter = new StringFormatter($format);
 
-        $string = $formatter->format($format);
+        $string = $formatter->format(array());
 
         $this->assertSame($expected, $string);
     }
@@ -241,9 +237,9 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
             $descriptors[] = $mock;
         }
 
-        $formatter = new StringFormatter($descriptors, true);
+        $formatter = new StringFormatter($format, $descriptors, true);
 
-        $formatter->format($format, $fields);
+        $formatter->format($fields);
 
         foreach ($fields as $field => $value) {
             $this->assertSame($context->hasValue($field), $contexts[$index]->hasValue($field));
