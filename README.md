@@ -72,9 +72,9 @@ The following field descriptor are supported.
     `2` for `name_mr`, `3` for `name_mrs`, `4` for `name_miss`, `5` for `name_ms`.
 * `%t`
     If the preceding field descriptor resulted in an empty string, then the
-    empty string, else a space (or any other string defined in `$nameParts`). 
+    empty string, else a space (or any other string defined in `$values`). 
 
-The array argument `$nameParts` can define a value for each field descriptor.
+The array argument `$values` can define a value for each field descriptor.
 The keys can be either the descriptor character or a named key.
 
 The following keys are supported.
