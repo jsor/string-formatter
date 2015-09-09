@@ -1,0 +1,30 @@
+{
+    "name": "jsor/string-formatter",
+    "description": "String formatting.",
+    "authors": [
+        {
+            "name": "Jan Sorgalla",
+            "email": "jsorgalla@gmail.com"
+        }
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Jsor\\StringFormatter\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jsor\\StringFormatter\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=5.3.9"
+    },
+    "require-dev": {
+        "jsor/locale-data": "^1.0"
+    },
+    "suggest": {
+        "jsor/locale-data": "For using the NameFormatter"
+    }
+}
