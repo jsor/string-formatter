@@ -105,10 +105,10 @@ $values = array(
 );
 
 $formatter = new NameFormatter('en_US');
-$formatter->format($format, $values);
+echo $formatter->format($format, $values);
 ```
 
-This produces the following string.
+The above example will output:
 
 ```
 Mr. John Doe
@@ -135,10 +135,10 @@ $values = array(
 );
 
 $formatter = new NameFormatter('en_US');
-$formatter->formatDefault($values);
+echo $formatter->formatDefault($values);
 ```
 
-This produces the following string.
+The above example will output:
 
 ```
 Mr. John Doe
