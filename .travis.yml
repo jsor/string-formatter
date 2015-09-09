@@ -27,4 +27,8 @@ install:
   - if [ "$deps" = "low" ]; then composer update --prefer-source --prefer-lowest --prefer-stable; fi;
 
 script:
-  - phpunit -v --coverage-text
+  - phpunit -v --coverage-text --coverage-clover ./build/logs/clover.xml
+
+after_script:
+  - composer require satooshi/php-coveralls:dev-master --prefer-source
+  - php vendor/bin/coveralls -v
