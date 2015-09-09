@@ -120,7 +120,7 @@ Mr. John Doe
 public string NameFormatter::formatDefault([array $values]);
 ```
 
-Same as `NameFormatter::format`, but uses a default name format accroding to the
+Same as `NameFormatter::format`, but uses a default name format according to the
 locale passed to the NameFormatter constructor.
 
 #### Example
