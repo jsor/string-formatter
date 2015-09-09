@@ -19,7 +19,7 @@ NameFormatter
 =============
 
 To use the NameFormatter, you need to install the 
-[`jsor/locale-data`]((https://packagist.org/packages/jsor/locale-data) package.
+[`jsor/locale-data`](https://packagist.org/packages/jsor/locale-data) package.
 
 ```bash
 composer require jsor/locale-data
