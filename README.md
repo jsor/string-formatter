@@ -131,17 +131,25 @@ use Jsor\NameFormatter;
 $values = array(
     'given_name' => 'John',
     'family_name' => 'Doe',
-    'salutation' => 'Mr.',
+    'salutation_list_index' => 2 // name_mr
 );
 
-$formatter = new NameFormatter('en_US');
-echo $formatter->formatDefault($values);
+$enUsFormatter = new NameFormatter('en_US');
+echo $enUsFormatter->formatDefault($values)."\n";
+
+$deDeFormatter = new NameFormatter('de_DE');
+echo $deDeFormatter->formatDefault($values)."\n";
+
+$zhTwFormatter = new NameFormatter('zh_TW');
+echo $zhTwFormatter->formatDefault($values)."\n";
 ```
 
 The above example will output:
 
 ```
 Mr. John Doe
+Herr John Doe
+Doe John 先生
 ```
 
 License
