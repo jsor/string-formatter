@@ -2,7 +2,6 @@
 
 namespace Jsor\StringFormatter;
 
-use Jsor\StringFormatter\Exception\InvalidValuesException;
 use Jsor\StringFormatter\Exception\InvalidFieldDescriptorCharacterException;
 use Jsor\StringFormatter\Exception\MissingFieldDescriptorException;
 use Jsor\StringFormatter\FieldDescriptor\FieldDescriptorInterface;
