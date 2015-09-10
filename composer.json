@@ -1,6 +1,21 @@
 {
     "name": "jsor/string-formatter",
-    "description": "String formatting.",
+    "description": "Localized formatting of personal names, addresses and telephone numbers.",
+    "keywords": [
+        "string",
+        "name",
+        "address",
+        "postal",
+        "telephone",
+        "phone",
+        "number",
+        "format",
+        "formatting",
+        "intl",
+        "locale",
+        "localized",
+        "i18n"
+    ],
     "authors": [
         {
             "name": "Jan Sorgalla",

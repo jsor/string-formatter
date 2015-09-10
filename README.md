@@ -1,8 +1,13 @@
 StringFormatter
 ===============
 
+Localized formatting of personal names, addresses and telephone numbers.
+
 [![Build Status](https://travis-ci.org/jsor/string-formatter.svg?branch=master)](https://travis-ci.org/jsor/string-formatter)
 [![Coverage Status](https://coveralls.io/repos/jsor/string-formatter/badge.svg?branch=master&service=github)](https://coveralls.io/github/jsor/string-formatter?branch=master)
+
+**Note**: At the moment, only a NameFormatter is available. Address and
+telephone formatters will follow.
 
 Installation
 ------------
