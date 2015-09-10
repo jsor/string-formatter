@@ -134,17 +134,17 @@ final class NameFormatter implements FormatterInterface
                         3 => 'name_mrs',
                         4 => 'name_miss',
                         5 => 'name_ms',
-                    )
+                    ),
+                    function ($value) {
+                        if (is_numeric($value)) {
+                            return null;
+                        }
+
+                        return $value;
+                    }
                 ),
                 function () use ($locale) {
                     return LocaleData::getInstance()->getNameData($locale);
-                },
-                function ($value) {
-                    if (!is_string($value)) {
-                        return null;
-                    }
-
-                    return $value;
                 }
             ),
             new ConditionalValueFieldDescriptor(
