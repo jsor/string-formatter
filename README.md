@@ -17,7 +17,7 @@ Check the [Packagist page](https://packagist.org/packages/jsor/string-formatter)
 for all available versions.
 
 NameFormatter
-=============
+-------------
 
 The NameFormatter formats the appropriate representation of a person’s name for
 a locale by the given name parts.
@@ -67,6 +67,8 @@ The above example will output:
 ```
 Mr. John Doe
 ```
+
+### Pattern
  
 The pattern argument can contain any combination of characters and field
 descriptors.
@@ -104,6 +106,8 @@ The following field descriptor are supported.
 * `%t`
     If the preceding field descriptor resulted in an empty string, then the
     empty string, else a space.
+
+### Values
 
 The array argument passed to `format()` can define a value for each field
 descriptor. The keys can be either the descriptor character or a named key.
