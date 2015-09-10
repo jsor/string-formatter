@@ -28,17 +28,17 @@ use Jsor\NameFormatter;
 $nameParts = array(
     'given_name' => 'John',
     'family_name' => 'Doe',
-    'salutation_list_index' => 2 // name_mr
+    'salutation' => 2 // name_mr
 );
 
 $enUsFormatter = new NameFormatter('en_US');
-echo $enUsFormatter->formatDefault($nameParts)."\n";
+echo $enUsFormatter->format($nameParts)."\n";
 
 $deDeFormatter = new NameFormatter('de_DE');
-echo $deDeFormatter->formatDefault($nameParts)."\n";
+echo $deDeFormatter->format($nameParts)."\n";
 
 $zhCnFormatter = new NameFormatter('zh_CN');
-echo $zhCnFormatter->formatDefault($nameParts)."\n";
+echo $zhCnFormatter->format($nameParts)."\n";
 ```
 
 The above example will output:
@@ -95,14 +95,14 @@ The following field descriptor are supported.
     Initials for additional given names.
 * `%p`
     Profession.
-* `%s`
-    Salutation, such as "Doctor".
-* `%S`
-    Abbreviated salutation, such as "Mr." or "Dr."
 * `%d`
     Salutation, supporting the FDCC-sets conventions, with `1` for `name_gen`,
     `2` for `name_mr`, `3` for `name_mrs`, `4` for `name_miss`,
     `5` for `name_ms`.
+* `%s`
+    Full Salutation, such as "Doctor".
+* `%S`
+    Abbreviated salutation, such as "Mr." or "Dr."
 * `%t`
     If the preceding field descriptor resulted in an empty string, then the
     empty string, else a space.
@@ -123,9 +123,9 @@ The following keys are supported.
 * `additional_given_name`, `additional_given_names` or `m` (for `%m`)
 * `initials_for_additional_given_name`, `initials_for_additional_given_names` or `M` (for `%M`)
 * `profession`, `professions` or `p` (for `%p`)
-* `salutation`, `salutations` or `s` (for `%s`)
+* `salutation`, `salutations` or `d` (for `%d`)
+* `full_salutation`, `full_salutations` or `s` (for `%s`)
 * `abbreviated_salutation`, `abbreviated_salutations` or `S` (for `%S`)
-* `salutation_list_index`, `salutations_list_index` or `d` (for `%d`)
 
 License
 -------

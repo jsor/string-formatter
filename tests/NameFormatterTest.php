@@ -21,9 +21,9 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
             'm' => 'additional_given_names',
             'M' => 'initials_for_additional_given_names',
             'p' => 'profession',
-            's' => 'salutation',
-            'S' => 'abbreviated_salutation',
             'd' => 2,
+            's' => 'full_salutation',
+            'S' => 'abbreviated_salutation',
         );
 
         $formatter = new NameFormatter(null);
@@ -48,12 +48,12 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
             'm' => 'additional_given_names',
             'M' => 'initials_for_additional_given_names',
             'p' => 'profession',
-            's' => 'salutation',
-            'S' => 'abbreviated_salutation',
             'd' => 2,
+            's' => 'full_salutation',
+            'S' => 'abbreviated_salutation',
         );
 
-        $formatter = new NameFormatter('en_US', '%f%F%g%G%l%o%m%M%p%s%S%d%t');
+        $formatter = new NameFormatter('en_US', '%f%F%g%G%l%o%m%M%p%d%s%S%t');
 
         $name = $formatter->format($values);
 
@@ -80,17 +80,17 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
             'additional_given_names' => 'additional_given_names',
             'initials_for_additional_given_names' => 'initials_for_additional_given_names',
             'profession' => 'profession',
-            'salutation' => 'salutation',
+            'salutation' => 2,
+            'full_salutation' => 'full_salutation',
             'abbreviated_salutation' => 'abbreviated_salutation',
-            'salutation_list_index' => 2,
         );
 
-        $formatter = new NameFormatter('en_US', '%f%F%g%G%l%o%m%M%p%s%S%d%t');
+        $formatter = new NameFormatter('en_US', '%f%F%g%G%l%o%m%M%p%d%s%S%t');
 
         $name = $formatter->format($values);
 
         $parts = array_merge($values, array(
-            'salutation_list_index' => 'Mr.',
+            'salutation' => 'Mr.',
             't' => ' ',
         ));
 

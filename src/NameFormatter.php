@@ -105,27 +105,13 @@ final class NameFormatter implements FormatterInterface
                     'professions',
                 )
             ),
-            new ValueAliasFieldDescriptor(
-                new SimpleFieldDescriptor('s'),
-                array(
-                    'salutation',
-                    'salutations',
-                )
-            ),
-            new ValueAliasFieldDescriptor(
-                new SimpleFieldDescriptor('S'),
-                array(
-                    'abbreviated_salutation',
-                    'abbreviated_salutations',
-                )
-            ),
             new ChoiceFieldDescriptor(
                 new ChoiceFieldDescriptor(
                     new ValueAliasFieldDescriptor(
                         new SimpleFieldDescriptor('d'),
                         array(
-                            'salutation_list_index',
-                            'salutations_list_index',
+                            'salutation',
+                            'salutations',
                         )
                     ),
                     array(
@@ -146,6 +132,20 @@ final class NameFormatter implements FormatterInterface
                 function () use ($locale) {
                     return LocaleData::getInstance()->getNameData($locale);
                 }
+            ),
+            new ValueAliasFieldDescriptor(
+                new SimpleFieldDescriptor('s'),
+                array(
+                    'full_salutation',
+                    'full_salutations',
+                )
+            ),
+            new ValueAliasFieldDescriptor(
+                new SimpleFieldDescriptor('S'),
+                array(
+                    'abbreviated_salutation',
+                    'abbreviated_salutations',
+                )
             ),
             new ConditionalValueFieldDescriptor(
                 new StaticValueFieldDescriptor(
