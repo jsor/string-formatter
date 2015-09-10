@@ -37,8 +37,8 @@ echo $enUsFormatter->formatDefault($nameParts)."\n";
 $deDeFormatter = new NameFormatter('de_DE');
 echo $deDeFormatter->formatDefault($nameParts)."\n";
 
-$zhTwFormatter = new NameFormatter('zh_TW');
-echo $zhTwFormatter->formatDefault($nameParts)."\n";
+$zhCnFormatter = new NameFormatter('zh_CN');
+echo $zhCnFormatter->formatDefault($nameParts)."\n";
 ```
 
 The above example will output:
