@@ -98,12 +98,12 @@ The following field descriptor are supported.
 * `%S`
     Abbreviated salutation, such as "Mr." or "Dr."
 * `%d`
-    Salutation, using the FDCC-sets conventions, with `1` for the `name_gen`, 
-    `2` for `name_mr`, `3` for `name_mrs`, `4` for `name_miss`, 
+    Salutation, supporting the FDCC-sets conventions, with `1` for `name_gen`,
+    `2` for `name_mr`, `3` for `name_mrs`, `4` for `name_miss`,
     `5` for `name_ms`.
 * `%t`
     If the preceding field descriptor resulted in an empty string, then the
-    empty string, else a space. 
+    empty string, else a space.
 
 The array argument passed to `format()` can define a value for each field
 descriptor. The keys can be either the descriptor character or a named key.
