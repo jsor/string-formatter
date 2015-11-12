@@ -10,7 +10,12 @@ use Jsor\StringFormatter\FieldDescriptor\SimpleFieldDescriptor;
 final class StringFormatter implements FormatterInterface
 {
     private $pattern;
+
+    /**
+     * @var FieldDescriptorInterface[]
+     */
     private $fieldDescriptors;
+
     private $strict;
 
     public function __construct(
@@ -106,9 +111,6 @@ final class StringFormatter implements FormatterInterface
         return $descriptor->getReplacement($value, $formatContext);
     }
 
-    /**
-     * @return FieldDescriptorInterface
-     */
     private function getFieldDescriptor($character)
     {
         if (isset($this->fieldDescriptors[$character])) {
