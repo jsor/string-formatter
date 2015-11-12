@@ -15,8 +15,8 @@ final class ChoiceFieldDescriptor implements FieldDescriptorInterface
         $choices,
         $defaultValueTranslator = null
     ) {
-        $this->descriptor = $descriptor;
-        $this->choices = $choices;
+        $this->descriptor             = $descriptor;
+        $this->choices                = $choices;
         $this->defaultValueTranslator = $defaultValueTranslator;
     }
 

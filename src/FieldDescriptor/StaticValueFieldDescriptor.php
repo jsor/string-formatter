@@ -12,7 +12,7 @@ final class StaticValueFieldDescriptor implements FieldDescriptorInterface
     public function __construct(FieldDescriptorInterface $descriptor, $value)
     {
         $this->descriptor = $descriptor;
-        $this->value = $value;
+        $this->value      = $value;
     }
 
     public function getCharacter()

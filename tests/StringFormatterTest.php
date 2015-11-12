@@ -206,7 +206,7 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
     public function it_provides_correct_format_context($format, $fields, FormatContext $context, $index)
     {
         /** @var FormatContext[] $contexts */
-        $contexts = array();
+        $contexts    = array();
         $descriptors = array();
 
         foreach ($fields as $field => $value) {
@@ -256,25 +256,25 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 '%ab%c',
-                array('a' => 'A', 'c' => 'C'),
+                array('a'                   => 'A', 'c' => 'C'),
                 new FormatContext(array('a' => 'A', 'c' => 'C'), true, 'A', 'a', 'b'),
                 1,
             ),
             array(
                 '%a',
-                array('a' => 'A'),
+                array('a'                   => 'A'),
                 new FormatContext(array('a' => 'A'), true, null, null, null),
                 0,
             ),
             array(
                 ' %a',
-                array('a' => 'A'),
+                array('a'                   => 'A'),
                 new FormatContext(array('a' => 'A'), true, null, null, ' '),
                 0,
             ),
             array(
                 'x%a%b',
-                array('a' => 'A', 'b' => 'B'),
+                array('a'                   => 'A', 'b' => 'B'),
                 new FormatContext(array('a' => 'A', 'b' => 'B'), true, 'A', 'a', 'x'),
                 1,
             ),

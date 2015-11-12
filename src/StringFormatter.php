@@ -24,7 +24,7 @@ final class StringFormatter implements FormatterInterface
         $strict = false
     ) {
         $this->pattern = $pattern;
-        $this->strict = $strict;
+        $this->strict  = $strict;
 
         foreach ($fieldDescriptors as $fieldDescriptor) {
             $this->addFieldDescriptor($fieldDescriptor);
@@ -53,10 +53,10 @@ final class StringFormatter implements FormatterInterface
     public function format(array $values)
     {
         $pattern = (string) $this->pattern;
-        $result = '';
+        $result  = '';
 
-        $previousValue = null;
-        $previousCharacter = null;
+        $previousValue           = null;
+        $previousCharacter       = null;
         $previousFormatCharacter = null;
 
         while ('' !== $pattern) {
@@ -72,7 +72,7 @@ final class StringFormatter implements FormatterInterface
                     )
                 );
 
-                $previousValue = $value;
+                $previousValue     = $value;
                 $previousCharacter = $matches[1];
 
                 $result .= $value;
@@ -106,7 +106,7 @@ final class StringFormatter implements FormatterInterface
     private function handle($character, FormatContext $formatContext)
     {
         $descriptor = $this->getFieldDescriptor($character);
-        $value = $descriptor->getValue($formatContext);
+        $value      = $descriptor->getValue($formatContext);
 
         return $descriptor->getReplacement($value, $formatContext);
     }

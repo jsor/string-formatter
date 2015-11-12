@@ -71,18 +71,18 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
     public function it_replaces_all_values_with_aliases()
     {
         $values = array(
-            'family_names' => 'family_names',
-            'family_names_in_uppercase' => 'family_names_in_uppercase',
-            'given_name' => 'given_name',
-            'given_initial' => 'given_initial',
-            'given_name_with_latin_letters' => 'given_name_with_latin_letters',
-            'other_shorter_name' => 'other_shorter_name',
-            'additional_given_names' => 'additional_given_names',
+            'family_names'                        => 'family_names',
+            'family_names_in_uppercase'           => 'family_names_in_uppercase',
+            'given_name'                          => 'given_name',
+            'given_initial'                       => 'given_initial',
+            'given_name_with_latin_letters'       => 'given_name_with_latin_letters',
+            'other_shorter_name'                  => 'other_shorter_name',
+            'additional_given_names'              => 'additional_given_names',
             'initials_for_additional_given_names' => 'initials_for_additional_given_names',
-            'profession' => 'profession',
-            'salutation' => 2,
-            'full_salutation' => 'full_salutation',
-            'abbreviated_salutation' => 'abbreviated_salutation',
+            'profession'                          => 'profession',
+            'salutation'                          => 2,
+            'full_salutation'                     => 'full_salutation',
+            'abbreviated_salutation'              => 'abbreviated_salutation',
         );
 
         $formatter = new NameFormatter('en_US', '%f%F%g%G%l%o%m%M%p%d%s%S%t');
@@ -91,7 +91,7 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
 
         $parts = array_merge($values, array(
             'salutation' => 'Mr.',
-            't' => ' ',
+            't'          => ' ',
         ));
 
         $this->assertSame(implode('', $parts), $name);

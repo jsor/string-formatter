@@ -17,10 +17,10 @@ final class FormatContext
         $previousCharacter,
         $previousFormatCharacter
     ) {
-        $this->values = $values;
-        $this->strict = (bool) $strict;
-        $this->previousValue = (string) $previousValue;
-        $this->previousCharacter = (string) $previousCharacter;
+        $this->values                  = $values;
+        $this->strict                  = (bool) $strict;
+        $this->previousValue           = (string) $previousValue;
+        $this->previousCharacter       = (string) $previousCharacter;
         $this->previousFormatCharacter = (string) $previousFormatCharacter;
     }
 

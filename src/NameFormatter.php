@@ -4,10 +4,10 @@ namespace Jsor\StringFormatter;
 
 use Jsor\LocaleData\LocaleData;
 use Jsor\StringFormatter\FieldDescriptor\ChoiceFieldDescriptor;
-use Jsor\StringFormatter\FieldDescriptor\StaticValueFieldDescriptor;
-use Jsor\StringFormatter\FieldDescriptor\ValueAliasFieldDescriptor;
 use Jsor\StringFormatter\FieldDescriptor\ConditionalValueFieldDescriptor;
 use Jsor\StringFormatter\FieldDescriptor\SimpleFieldDescriptor;
+use Jsor\StringFormatter\FieldDescriptor\StaticValueFieldDescriptor;
+use Jsor\StringFormatter\FieldDescriptor\ValueAliasFieldDescriptor;
 
 final class NameFormatter implements FormatterInterface
 {
@@ -16,7 +16,7 @@ final class NameFormatter implements FormatterInterface
 
     public function __construct($locale, $pattern = null)
     {
-        $this->locale = $locale;
+        $this->locale  = $locale;
         $this->pattern = $pattern;
     }
 
@@ -35,7 +35,7 @@ final class NameFormatter implements FormatterInterface
         $pattern = $this->pattern;
 
         if (null === $pattern) {
-            $data = LocaleData::getInstance()->getNameData($locale);
+            $data    = LocaleData::getInstance()->getNameData($locale);
             $pattern = $data['name_fmt'];
         }
 

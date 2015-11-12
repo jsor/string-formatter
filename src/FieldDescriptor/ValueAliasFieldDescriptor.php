@@ -12,7 +12,7 @@ final class ValueAliasFieldDescriptor implements FieldDescriptorInterface
     public function __construct(FieldDescriptorInterface $descriptor, array $aliases)
     {
         $this->descriptor = $descriptor;
-        $this->aliases = $aliases;
+        $this->aliases    = $aliases;
     }
 
     public function getCharacter()
