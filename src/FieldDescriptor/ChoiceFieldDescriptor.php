@@ -31,7 +31,7 @@ final class ChoiceFieldDescriptor implements FieldDescriptorInterface
 
         $choices = $this->getChoices($value);
 
-        if (isset($choices[$value])) {
+        if (array_key_exists($value, $choices)) {
             return $choices[$value];
         }
 
