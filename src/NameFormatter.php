@@ -12,6 +12,7 @@ use Jsor\StringFormatter\FieldDescriptor\ValueAliasFieldDescriptor;
 final class NameFormatter implements FormatterInterface
 {
     private $locale;
+    private $pattern;
     private $stringFormatter;
 
     public function __construct($locale, $pattern = null)
