@@ -21,15 +21,11 @@ cache:
     - vendor
     - $HOME/.composer/cache
 
-before_install:
-  - composer self-update -q
-  - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
-
 install:
   - if [ -z "$dependencies" ]; then travis_retry composer install --no-interaction; fi;
   - if [ "$dependencies" = "lowest" ]; then travis_retry composer update --prefer-lowest --no-interaction; fi;
   - if [ "$dependencies" = "highest" ]; then travis_retry composer update --no-interaction; fi;
-  - composer show -i
+  - composer show
 
 script:
   - phpunit -v --coverage-text --coverage-clover=./build/logs/clover.xml
