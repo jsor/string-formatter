@@ -3,8 +3,9 @@
 namespace Jsor;
 
 use Jsor\StringFormatter\NameFormatter;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
-class NameFormatterTest extends \PHPUnit_Framework_TestCase
+class NameFormatterTest extends BaseTestCase
 {
     /**
      * @test

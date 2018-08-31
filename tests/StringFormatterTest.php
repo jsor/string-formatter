@@ -4,8 +4,9 @@ namespace Jsor\StringFormatter;
 
 use Jsor\StringFormatter\FieldDescriptor\RequiredValueFieldDescriptor;
 use Jsor\StringFormatter\FieldDescriptor\SimpleFieldDescriptor;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
-class StringFormatterTest extends \PHPUnit_Framework_TestCase
+class StringFormatterTest extends BaseTestCase
 {
     /**
      * @test
@@ -210,7 +211,7 @@ class StringFormatterTest extends \PHPUnit_Framework_TestCase
         $descriptors = array();
 
         foreach ($fields as $field => $value) {
-            $mock = $this->getMock('Jsor\StringFormatter\FieldDescriptor\FieldDescriptorInterface');
+            $mock = $this->getMockBuilder('Jsor\StringFormatter\FieldDescriptor\FieldDescriptorInterface')->getMock();
 
             $mock
                 ->expects($this->any())

@@ -1,26 +1,28 @@
 language: php
 
+dist: trusty
+
 php:
-  - 5.3
   - 5.4
   - 5.5
   - 5.6
   - 7.0
   - 7.1
   - 7.2
+  - nightly
 
 matrix:
   include:
     - php: 5.3
       env: dependencies=lowest
+      dist: precise
     - php: 7.2
       env: dependencies=highest
   fast_finish: true
 
 cache:
   directories:
-    - vendor
-    - $HOME/.composer/cache
+    - $HOME/.composer/cache/files
 
 install:
   - if [ -z "$dependencies" ]; then travis_retry composer install --no-interaction; fi;
@@ -29,8 +31,8 @@ install:
   - composer show
 
 script:
-  - phpunit -v --coverage-text --coverage-clover=./build/logs/clover.xml
+  - ./vendor/bin/phpunit -v --coverage-text --coverage-clover=./build/logs/clover.xml
 
 after_success:
-  - if [ -f ./build/logs/clover.xml ]; then travis_retry composer require satooshi/php-coveralls --no-interaction --update-with-dependencies; fi
-  - if [ -f ./build/logs/clover.xml ]; then php vendor/bin/coveralls -v; fi
+  - if [ -f ./build/logs/clover.xml ]; then wget https://github.com/php-coveralls/php-coveralls/releases/download/v1.1.0/coveralls.phar; fi
+  - if [ -f ./build/logs/clover.xml ]; then php ./coveralls.phar -v; fi
