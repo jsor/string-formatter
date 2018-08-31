@@ -35,6 +35,6 @@
     },
     "require": {
         "php": ">=5.3.9",
-        "jsor/locale-data": "^1.0"
+        "jsor/locale-data": "^1.0 || ^2.0"
     }
 }
