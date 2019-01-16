@@ -87,7 +87,8 @@ class StringFormatterTest extends BaseTestCase
 
     /**
      * @test
-     * @expectedException \Jsor\StringFormatter\Exception\InvalidFieldDescriptorCharacterException
+     * @expectedException        \Jsor\StringFormatter\Exception\InvalidFieldDescriptorCharacterException
+     * @expectedExceptionMessage A field descriptor character must be a string consisting of single character, got null ("NULL").
      */
     public function it_throws_for_invalid_field_descriptor_character()
     {
@@ -100,7 +101,8 @@ class StringFormatterTest extends BaseTestCase
 
     /**
      * @test
-     * @expectedException \Jsor\StringFormatter\Exception\InvalidFieldDescriptorCharacterException
+     * @expectedException        \Jsor\StringFormatter\Exception\InvalidFieldDescriptorCharacterException
+     * @expectedExceptionMessage A field descriptor character must be a string consisting of single character, got "ab" ("string").
      */
     public function it_throws_for_too_long_field_descriptor_character()
     {
@@ -113,7 +115,8 @@ class StringFormatterTest extends BaseTestCase
 
     /**
      * @test
-     * @expectedException \Jsor\StringFormatter\Exception\MissingFieldDescriptorException
+     * @expectedException        \Jsor\StringFormatter\Exception\MissingFieldDescriptorException
+     * @expectedExceptionMessage Missing field description for character "a".
      */
     public function it_throws_for_missing_field_descriptor_in_strict_mode()
     {
@@ -124,7 +127,8 @@ class StringFormatterTest extends BaseTestCase
 
     /**
      * @test
-     * @expectedException \Jsor\StringFormatter\Exception\MissingFieldValueException
+     * @expectedException        \Jsor\StringFormatter\Exception\MissingFieldValueException
+     * @expectedExceptionMessage The value for the field "a" is missing.
      */
     public function it_throws_for_missing_required_field_value()
     {
