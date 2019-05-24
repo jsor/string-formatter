@@ -135,5 +135,5 @@ The following keys are supported.
 License
 -------
 
-Copyright (c) 2015-2018 Jan Sorgalla.
+Copyright (c) 2015-2019 Jan Sorgalla.
 Released under the [MIT](LICENSE) license.
