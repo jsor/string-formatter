@@ -7,7 +7,7 @@ namespace Jsor\StringFormatter;
 final class FormatContext
 {
     /**
-     * @var array<string, string|int>
+     * @var array<string, mixed>
      */
     private $values;
 
@@ -32,7 +32,7 @@ final class FormatContext
     private $previousFormatCharacter;
 
     /**
-     * @param array<string, string|int> $values
+     * @param array<string, mixed> $values
      */
     public function __construct(
         array $values,
@@ -62,7 +62,7 @@ final class FormatContext
             return null;
         }
 
-        return (string) $this->values[$key];
+        return $this->values[$key];
     }
 
     public function isStrict(): bool

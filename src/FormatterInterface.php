@@ -7,7 +7,7 @@ namespace Jsor\StringFormatter;
 interface FormatterInterface
 {
     /**
-     * @param array<string, string|int> $values
+     * @param array<string, mixed> $values
      */
     public function format(array $values): string;
 }
