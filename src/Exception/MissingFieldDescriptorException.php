@@ -11,9 +11,9 @@ class MissingFieldDescriptorException extends LogicException
     public static function create(string $character): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'Missing field description for character %s.',
-                json_encode($character)
+                \json_encode($character)
             )
         );
     }

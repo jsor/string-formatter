@@ -33,8 +33,7 @@ final class StringFormatter implements FormatterInterface
         string $pattern,
         array $fieldDescriptors = [],
         bool $strict = false
-    )
-    {
+    ) {
         $this->pattern = $pattern;
         $this->strict = $strict;
 
@@ -49,7 +48,7 @@ final class StringFormatter implements FormatterInterface
     private function addFieldDescriptor($fieldDescriptor): void
     {
         if (!$fieldDescriptor instanceof FieldDescriptorInterface) {
-            if (!is_string($fieldDescriptor)) {
+            if (!\is_string($fieldDescriptor)) {
                 throw InvalidFieldDescriptorCharacterException::create($fieldDescriptor);
             }
 
@@ -65,7 +64,7 @@ final class StringFormatter implements FormatterInterface
     {
         $character = $fieldDescriptor->getCharacter();
 
-        if (1 !== strlen($character)) {
+        if (1 !== \strlen($character)) {
             throw InvalidFieldDescriptorCharacterException::create($character);
         }
     }
@@ -99,7 +98,7 @@ final class StringFormatter implements FormatterInterface
         $previousFormatCharacter = null;
 
         while ('' !== $pattern) {
-            if ((bool) preg_match('/^%(.{1})/', $pattern, $matches)) {
+            if ((bool) \preg_match('/^%(.{1})/', $pattern, $matches)) {
                 $value = $this->handle(
                     $matches[1],
                     new FormatContext(
@@ -115,7 +114,7 @@ final class StringFormatter implements FormatterInterface
                 $previousCharacter = $matches[1];
 
                 $result .= $value;
-                $pattern = substr($pattern, 2);
+                $pattern = \substr($pattern, 2);
             }
 
             // Single trailing %
@@ -123,7 +122,7 @@ final class StringFormatter implements FormatterInterface
                 break;
             }
 
-            $pos = strpos($pattern, '%');
+            $pos = \strpos($pattern, '%');
 
             // No more %
             if (false === $pos) {
@@ -132,10 +131,10 @@ final class StringFormatter implements FormatterInterface
             }
 
             if (0 !== $pos) {
-                $previousFormatCharacter = substr($pattern, $pos - 1, 1);
+                $previousFormatCharacter = \substr($pattern, $pos - 1, 1);
 
-                $result .= substr($pattern, 0, $pos);
-                $pattern = substr($pattern, $pos);
+                $result .= \substr($pattern, 0, $pos);
+                $pattern = \substr($pattern, $pos);
             }
         }
 

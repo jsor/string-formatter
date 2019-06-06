@@ -32,7 +32,6 @@ final class FormatContext
     private $previousFormatCharacter;
 
     /**
-     * FormatContext constructor.
      * @param array<string, string|int> $values
      */
     public function __construct(
@@ -41,8 +40,7 @@ final class FormatContext
         ?string $previousValue,
         ?string $previousCharacter,
         ?string $previousFormatCharacter
-    )
-    {
+    ) {
         $this->values = $values;
         $this->strict = $strict;
         $this->previousValue = $previousValue;
@@ -52,7 +50,7 @@ final class FormatContext
 
     public function hasValue(string $key): bool
     {
-        return array_key_exists($key, $this->values);
+        return \array_key_exists($key, $this->values);
     }
 
     /**

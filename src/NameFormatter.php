@@ -143,7 +143,7 @@ final class NameFormatter implements FormatterInterface
                      * @param mixed $value
                      */
                     static function ($value) {
-                        if (is_numeric($value)) {
+                        if (\is_numeric($value)) {
                             return null;
                         }
 

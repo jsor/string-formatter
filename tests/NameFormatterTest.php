@@ -57,12 +57,12 @@ class NameFormatterTest extends TestCase
 
         $name = $formatter->format($values);
 
-        $parts = array_merge($values, [
+        $parts = \array_merge($values, [
             'd' => 'Mr.',
             't' => ' ',
         ]);
 
-        self::assertSame(implode('', $parts), $name);
+        self::assertSame(\implode('', $parts), $name);
     }
 
     /**
@@ -89,12 +89,12 @@ class NameFormatterTest extends TestCase
 
         $name = $formatter->format($values);
 
-        $parts = array_merge($values, [
+        $parts = \array_merge($values, [
             'salutation' => 'Mr.',
             't' => ' ',
         ]);
 
-        self::assertSame(implode('', $parts), $name);
+        self::assertSame(\implode('', $parts), $name);
     }
 
     /**

@@ -14,10 +14,10 @@ class InvalidFieldDescriptorCharacterException extends LogicException
     public static function create($character): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'A field descriptor character must be a string consisting of single character, got %s (%s).',
-                json_encode($character),
-                json_encode(gettype($character))
+                \json_encode($character),
+                \json_encode(\gettype($character))
             )
         );
     }

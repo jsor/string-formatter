@@ -45,12 +45,12 @@ class StringFormatterTest extends TestCase
 
         $formatter = new StringFormatter(
             '%a %b %c %D %E %F',
-            array_keys($values)
+            \array_keys($values)
         );
 
         $string = $formatter->format($values);
 
-        self::assertSame(implode(' ', $values), $string);
+        self::assertSame(\implode(' ', $values), $string);
     }
 
     /**
@@ -138,7 +138,7 @@ class StringFormatterTest extends TestCase
         $this->expectExceptionMessage('The value for the field "a" is missing.');
 
         $formatter = new StringFormatter('%a', [
-            new RequiredValueFieldDescriptor(new SimpleFieldDescriptor('a'))
+            new RequiredValueFieldDescriptor(new SimpleFieldDescriptor('a')),
         ], true);
 
         $formatter->format([]);
@@ -150,7 +150,7 @@ class StringFormatterTest extends TestCase
     public function it_passes_when_required_field_value_is_provided(): void
     {
         $formatter = new StringFormatter('%a', [
-            new RequiredValueFieldDescriptor(new SimpleFieldDescriptor('a'))
+            new RequiredValueFieldDescriptor(new SimpleFieldDescriptor('a')),
         ], true);
 
         $string = $formatter->format(['a' => 'a']);

@@ -30,8 +30,7 @@ final class ChoiceFieldDescriptor implements FieldDescriptorInterface
         FieldDescriptorInterface $descriptor,
         $choices,
         callable $defaultValueTranslator = null
-    )
-    {
+    ) {
         $this->descriptor = $descriptor;
         $this->choices = $choices;
         $this->defaultValueTranslator = $defaultValueTranslator;
@@ -48,12 +47,12 @@ final class ChoiceFieldDescriptor implements FieldDescriptorInterface
 
         $choices = $this->getChoices($value);
 
-        if (array_key_exists($value, $choices)) {
+        if (\array_key_exists($value, $choices)) {
             return (string) $choices[$value];
         }
 
-        if (is_callable($this->defaultValueTranslator)) {
-            return (string) call_user_func($this->defaultValueTranslator, $value);
+        if (\is_callable($this->defaultValueTranslator)) {
+            return (string) \call_user_func($this->defaultValueTranslator, $value);
         }
 
         return $value;
@@ -63,7 +62,7 @@ final class ChoiceFieldDescriptor implements FieldDescriptorInterface
     {
         $choices = $this->choices;
 
-        if (is_callable($choices)) {
+        if (\is_callable($choices)) {
             $choices = (array) $choices($value);
         }
 
