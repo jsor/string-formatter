@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jsor\StringFormatter\FieldDescriptor;
 
 use Jsor\StringFormatter\FormatContext;
 
 final class ConditionalValueFieldDescriptor implements FieldDescriptorInterface
 {
+    /**
+     * @var FieldDescriptorInterface
+     */
     private $descriptor;
 
     public function __construct(FieldDescriptorInterface $descriptor)
@@ -13,20 +18,21 @@ final class ConditionalValueFieldDescriptor implements FieldDescriptorInterface
         $this->descriptor = $descriptor;
     }
 
-    public function getCharacter()
+    public function getCharacter(): string
     {
         return $this->descriptor->getCharacter();
     }
-    public function getValue(FormatContext $context)
+
+    public function getValue(FormatContext $context): string
     {
-        if ('' === $context->getPreviousValue()) {
+        if ('' === (string) $context->getPreviousValue()) {
             return '';
         }
 
         return $this->descriptor->getValue($context);
     }
 
-    public function getReplacement($value, FormatContext $context)
+    public function getReplacement(string $value, FormatContext $context): string
     {
         return $this->descriptor->getReplacement($value, $context);
     }

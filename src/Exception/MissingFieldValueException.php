@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jsor\StringFormatter\Exception;
 
-class MissingFieldValueException extends \RuntimeException
+use RuntimeException;
+
+class MissingFieldValueException extends RuntimeException
 {
-    public static function create($field)
+    public static function create(string $field): self
     {
         return new self(
             sprintf(

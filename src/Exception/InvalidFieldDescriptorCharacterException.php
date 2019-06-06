@@ -1,10 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jsor\StringFormatter\Exception;
 
-class InvalidFieldDescriptorCharacterException extends \LogicException
+use LogicException;
+
+class InvalidFieldDescriptorCharacterException extends LogicException
 {
-    public static function create($character)
+    /**
+     * @param mixed $character
+     */
+    public static function create($character): self
     {
         return new self(
             sprintf(

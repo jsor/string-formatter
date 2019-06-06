@@ -1,29 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jsor\StringFormatter\FieldDescriptor;
 
 use Jsor\StringFormatter\FormatContext;
 
 final class SimpleFieldDescriptor implements FieldDescriptorInterface
 {
+    /**
+     * @var string
+     */
     private $character;
 
-    public function __construct($character)
+    public function __construct(string $character)
     {
         $this->character = $character;
     }
 
-    public function getCharacter()
+    public function getCharacter(): string
     {
         return $this->character;
     }
 
-    public function getValue(FormatContext $context)
+    public function getValue(FormatContext $context): string
     {
-        return $context->getValue($this->character);
+        return (string) $context->getValue($this->character);
     }
 
-    public function getReplacement($value, FormatContext $context)
+    public function getReplacement(string $value, FormatContext $context): string
     {
         return $value;
     }

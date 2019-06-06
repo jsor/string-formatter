@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jsor\StringFormatter\Exception;
 
-class MissingFieldDescriptorException extends \LogicException
+use LogicException;
+
+class MissingFieldDescriptorException extends LogicException
 {
-    public static function create($character)
+    public static function create(string $character): self
     {
         return new self(
             sprintf(

@@ -2,42 +2,46 @@
 
 namespace Jsor\StringFormatter;
 
+use Jsor\StringFormatter\Exception\InvalidFieldDescriptorCharacterException;
+use Jsor\StringFormatter\Exception\MissingFieldDescriptorException;
+use Jsor\StringFormatter\Exception\MissingFieldValueException;
+use Jsor\StringFormatter\FieldDescriptor\FieldDescriptorInterface;
 use Jsor\StringFormatter\FieldDescriptor\RequiredValueFieldDescriptor;
 use Jsor\StringFormatter\FieldDescriptor\SimpleFieldDescriptor;
-use PHPUnit\Framework\TestCase as BaseTestCase;
+use PHPUnit\Framework\TestCase;
 
-class StringFormatterTest extends BaseTestCase
+class StringFormatterTest extends TestCase
 {
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $formatter = new StringFormatter('%a');
 
         $changed = $formatter->withFieldDescriptor('a');
 
-        $this->assertNotSame($formatter, $changed);
+        self::assertNotSame($formatter, $changed);
 
         $changed2 = $formatter->withPattern('%b');
 
-        $this->assertNotSame($formatter, $changed2);
-        $this->assertNotSame($changed, $changed2);
+        self::assertNotSame($formatter, $changed2);
+        self::assertNotSame($changed, $changed2);
     }
 
     /**
      * @test
      */
-    public function it_replaces_field_descriptors()
+    public function it_replaces_field_descriptors(): void
     {
-        $values = array(
+        $values = [
             'a' => 'A',
             'b' => 'B',
             'c' => 'C',
             'D' => 'd',
             'E' => 'e',
             'F' => 'f',
-        );
+        ];
 
         $formatter = new StringFormatter(
             '%a %b %c %D %E %F',
@@ -46,198 +50,204 @@ class StringFormatterTest extends BaseTestCase
 
         $string = $formatter->format($values);
 
-        $this->assertSame(implode(' ', $values), $string);
+        self::assertSame(implode(' ', $values), $string);
     }
 
     /**
      * @test
      */
-    public function it_silently_removes_unknown_fields_by_default()
+    public function it_silently_removes_unknown_fields_by_default(): void
     {
         $formatter = new StringFormatter('%u');
 
-        $string = $formatter->format(array());
+        $string = $formatter->format([]);
 
-        $this->assertSame('', $string);
+        self::assertSame('', $string);
     }
 
     /**
      * @test
      */
-    public function it_does_not_escape_modulo_by_default()
+    public function it_does_not_escape_modulo_by_default(): void
     {
         $formatter = new StringFormatter('%%');
 
-        $string = $formatter->format(array());
+        $string = $formatter->format([]);
 
-        $this->assertSame('', $string);
+        self::assertSame('', $string);
     }
 
     /**
      * @test
      */
-    public function it_allows_empty_pattern()
+    public function it_allows_empty_pattern(): void
     {
         $formatter = new StringFormatter('');
 
-        $string = $formatter->format(array());
+        $string = $formatter->format([]);
 
-        $this->assertSame('', $string);
+        self::assertSame('', $string);
     }
 
     /**
      * @test
-     * @expectedException        \Jsor\StringFormatter\Exception\InvalidFieldDescriptorCharacterException
-     * @expectedExceptionMessage A field descriptor character must be a string consisting of single character, got null ("NULL").
      */
-    public function it_throws_for_invalid_field_descriptor_character()
+    public function it_throws_for_invalid_field_descriptor_character(): void
     {
-        $formatter = new StringFormatter('', array(
+        $this->expectException(InvalidFieldDescriptorCharacterException::class);
+        $this->expectExceptionMessage('A field descriptor character must be a string consisting of single character, got null ("NULL").');
+
+        /** @psalm-suppress InvalidArgument */
+        new StringFormatter('', [
             null,
-        ));
-
-        $formatter->format(array());
+        ]);
     }
 
     /**
      * @test
-     * @expectedException        \Jsor\StringFormatter\Exception\InvalidFieldDescriptorCharacterException
-     * @expectedExceptionMessage A field descriptor character must be a string consisting of single character, got "ab" ("string").
      */
-    public function it_throws_for_too_long_field_descriptor_character()
+    public function it_throws_for_too_long_field_descriptor_character(): void
     {
-        $formatter = new StringFormatter('', array(
+        $this->expectException(InvalidFieldDescriptorCharacterException::class);
+        $this->expectExceptionMessage('A field descriptor character must be a string consisting of single character, got "ab" ("string").');
+
+        new StringFormatter('', [
             'ab',
-        ));
-
-        $formatter->format(array());
+        ]);
     }
 
     /**
      * @test
-     * @expectedException        \Jsor\StringFormatter\Exception\MissingFieldDescriptorException
-     * @expectedExceptionMessage Missing field description for character "a".
      */
-    public function it_throws_for_missing_field_descriptor_in_strict_mode()
+    public function it_throws_for_missing_field_descriptor_in_strict_mode(): void
     {
-        $formatter = new StringFormatter('%a', array(), true);
+        $this->expectException(MissingFieldDescriptorException::class);
+        $this->expectExceptionMessage('Missing field description for character "a".');
 
-        $formatter->format(array());
+        $formatter = new StringFormatter('%a', [], true);
+
+        $formatter->format([]);
     }
 
     /**
      * @test
-     * @expectedException        \Jsor\StringFormatter\Exception\MissingFieldValueException
-     * @expectedExceptionMessage The value for the field "a" is missing.
      */
-    public function it_throws_for_missing_required_field_value()
+    public function it_throws_for_missing_required_field_value(): void
     {
-        $formatter = new StringFormatter('%a', array(
+        $this->expectException(MissingFieldValueException::class);
+        $this->expectExceptionMessage('The value for the field "a" is missing.');
+
+        $formatter = new StringFormatter('%a', [
             new RequiredValueFieldDescriptor(new SimpleFieldDescriptor('a'))
-        ), true);
+        ], true);
 
-        $formatter->format(array());
+        $formatter->format([]);
     }
 
     /**
      * @test
      */
-    public function it_passes_when_required_field_value_is_provided()
+    public function it_passes_when_required_field_value_is_provided(): void
     {
-        $formatter = new StringFormatter('%a', array(
+        $formatter = new StringFormatter('%a', [
             new RequiredValueFieldDescriptor(new SimpleFieldDescriptor('a'))
-        ), true);
+        ], true);
 
-        $string = $formatter->format(array('a' => 'a'));
+        $string = $formatter->format(['a' => 'a']);
 
-        $this->assertSame('a', $string);
+        self::assertSame('a', $string);
     }
 
     /**
      * @test
      * @dataProvider provideUnusualFormats
      */
-    public function it_handles_unusual_formats($format, $expected)
+    public function it_handles_unusual_formats(string $format, string $expected): void
     {
         $formatter = new StringFormatter($format);
 
-        $string = $formatter->format(array());
+        $string = $formatter->format([]);
 
-        $this->assertSame($expected, $string);
+        self::assertSame($expected, $string);
     }
 
-    public function provideUnusualFormats()
+    /**
+     * @return array<array-key, array<array-key, string>>
+     */
+    public function provideUnusualFormats(): array
     {
-        return array(
-            array(
+        return [
+            [
                 '%',
                 '',
-            ),
-            array(
+            ],
+            [
                 'abc%',
                 'abc',
-            ),
-            array(
+            ],
+            [
                 ' %',
                 ' ',
-            ),
-            array(
+            ],
+            [
                 '% ',
                 '',
-            ),
-            array(
+            ],
+            [
                 'x%',
                 'x',
-            ),
-            array(
+            ],
+            [
                 '% x',
                 'x',
-            ),
-            array(
+            ],
+            [
                 'x% x',
                 'xx',
-            ),
-            array(
+            ],
+            [
                 'x%  x',
                 'x x',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
      * @test
      * @dataProvider provideFormatContexts
+     *
+     * @param array<string, string> $fields
      */
-    public function it_provides_correct_format_context($format, $fields, FormatContext $context, $index)
+    public function it_provides_correct_format_context(string $format, array $fields, FormatContext $context, int $index): void
     {
         /** @var FormatContext[] $contexts */
-        $contexts    = array();
-        $descriptors = array();
+        $contexts = [];
+
+        /** @var FieldDescriptorInterface[] $descriptors */
+        $descriptors = [];
 
         foreach ($fields as $field => $value) {
-            $mock = $this->getMockBuilder('Jsor\StringFormatter\FieldDescriptor\FieldDescriptorInterface')->getMock();
+            $mock = $this->getMockBuilder(FieldDescriptorInterface::class)->getMock();
 
             $mock
-                ->expects($this->any())
                 ->method('getCharacter')
-                ->will($this->returnValue($field))
-            ;
+                ->willReturn($field);
 
             $mock
-                ->expects($this->once())
+                ->expects(self::once())
                 ->method('getValue')
-                ->will($this->returnValue($value))
-            ;
+                ->willReturn($value);
 
             $mock
-                ->expects($this->once())
+                ->expects(self::once())
                 ->method('getReplacement')
-                ->will($this->returnCallback(function ($value, $context) use (&$contexts) {
-                    $contexts[] = $context;
+                ->willReturnCallback(
+                    static function (string $value, FormatContext $context) use (&$contexts): string {
+                        $contexts[] = $context;
 
-                    return $value;
-                }))
-            ;
+                        return $value;
+                    }
+                );
 
             $descriptors[] = $mock;
         }
@@ -247,42 +257,45 @@ class StringFormatterTest extends BaseTestCase
         $formatter->format($fields);
 
         foreach ($fields as $field => $value) {
-            $this->assertSame($context->hasValue($field), $contexts[$index]->hasValue($field));
-            $this->assertSame($context->getValue($field), $contexts[$index]->getValue($field));
+            self::assertEquals($context->hasValue($field), $contexts[$index]->hasValue($field));
+            self::assertEquals($context->getValue($field), $contexts[$index]->getValue($field));
         }
-        $this->assertSame($context->isStrict(), $contexts[$index]->isStrict());
-        $this->assertSame($context->getPreviousValue(), $contexts[$index]->getPreviousValue());
-        $this->assertSame($context->getPreviousCharacter(), $contexts[$index]->getPreviousCharacter());
-        $this->assertSame($context->getPreviousFormatCharacter(), $contexts[$index]->getPreviousFormatCharacter());
+        self::assertEquals($context->isStrict(), $contexts[$index]->isStrict());
+        self::assertEquals($context->getPreviousValue(), $contexts[$index]->getPreviousValue());
+        self::assertEquals($context->getPreviousCharacter(), $contexts[$index]->getPreviousCharacter());
+        self::assertEquals($context->getPreviousFormatCharacter(), $contexts[$index]->getPreviousFormatCharacter());
     }
 
-    public function provideFormatContexts()
+    /**
+     * @return array<array-key, array{0:string, 1:array<string, string>, 2:FormatContext, 3:int}>
+     */
+    public function provideFormatContexts(): array
     {
-        return array(
-            array(
+        return [
+            [
                 '%ab%c',
-                array('a'                   => 'A', 'c' => 'C'),
-                new FormatContext(array('a' => 'A', 'c' => 'C'), true, 'A', 'a', 'b'),
+                ['a' => 'A', 'c' => 'C'],
+                new FormatContext(['a' => 'A', 'c' => 'C'], true, 'A', 'a', 'b'),
                 1,
-            ),
-            array(
+            ],
+            [
                 '%a',
-                array('a'                   => 'A'),
-                new FormatContext(array('a' => 'A'), true, null, null, null),
+                ['a' => 'A'],
+                new FormatContext(['a' => 'A'], true, null, null, null),
                 0,
-            ),
-            array(
+            ],
+            [
                 ' %a',
-                array('a'                   => 'A'),
-                new FormatContext(array('a' => 'A'), true, null, null, ' '),
+                ['a' => 'A'],
+                new FormatContext(['a' => 'A'], true, null, null, ' '),
                 0,
-            ),
-            array(
+            ],
+            [
                 'x%a%b',
-                array('a'                   => 'A', 'b' => 'B'),
-                new FormatContext(array('a' => 'A', 'b' => 'B'), true, 'A', 'a', 'x'),
+                ['a' => 'A', 'b' => 'B'],
+                new FormatContext(['a' => 'A', 'b' => 'B'], true, 'A', 'a', 'x'),
                 1,
-            ),
-        );
+            ],
+        ];
     }
 }

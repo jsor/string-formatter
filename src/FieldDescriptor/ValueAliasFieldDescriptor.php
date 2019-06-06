@@ -1,39 +1,51 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jsor\StringFormatter\FieldDescriptor;
 
 use Jsor\StringFormatter\FormatContext;
 
 final class ValueAliasFieldDescriptor implements FieldDescriptorInterface
 {
+    /**
+     * @var FieldDescriptorInterface
+     */
     private $descriptor;
+
+    /**
+     * @var array<string>
+     */
     private $aliases;
 
+    /**
+     * @param array<string> $aliases
+     */
     public function __construct(FieldDescriptorInterface $descriptor, array $aliases)
     {
         $this->descriptor = $descriptor;
-        $this->aliases    = $aliases;
+        $this->aliases = $aliases;
     }
 
-    public function getCharacter()
+    public function getCharacter(): string
     {
         return $this->descriptor->getCharacter();
     }
 
-    public function getValue(FormatContext $context)
+    public function getValue(FormatContext $context): string
     {
         foreach ($this->aliases as $alias) {
             if (!$context->hasValue($alias)) {
                 continue;
             }
 
-            return $context->getValue($alias);
+            return (string) $context->getValue($alias);
         }
 
         return $this->descriptor->getValue($context);
     }
 
-    public function getReplacement($value, FormatContext $context)
+    public function getReplacement(string $value, FormatContext $context): string
     {
         return $this->descriptor->getReplacement($value, $context);
     }

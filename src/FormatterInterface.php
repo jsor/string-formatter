@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jsor\StringFormatter;
 
 interface FormatterInterface
 {
     /**
-     * @param  array  $values
-     * @return string
+     * @param array<string, string|int> $values
      */
-    public function format(array $values);
+    public function format(array $values): string;
 }

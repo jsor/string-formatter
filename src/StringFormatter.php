@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jsor\StringFormatter;
 
 use Jsor\StringFormatter\Exception\InvalidFieldDescriptorCharacterException;
@@ -9,40 +11,77 @@ use Jsor\StringFormatter\FieldDescriptor\SimpleFieldDescriptor;
 
 final class StringFormatter implements FormatterInterface
 {
+    /**
+     * @var string
+     */
     private $pattern;
 
     /**
      * @var FieldDescriptorInterface[]
      */
-    private $fieldDescriptors;
+    private $fieldDescriptors = [];
 
+    /**
+     * @var bool
+     */
     private $strict;
 
+    /**
+     * @param array<string|FieldDescriptorInterface> $fieldDescriptors
+     */
     public function __construct(
-        $pattern,
-        array $fieldDescriptors = array(),
-        $strict = false
-    ) {
+        string $pattern,
+        array $fieldDescriptors = [],
+        bool $strict = false
+    )
+    {
         $this->pattern = $pattern;
-        $this->strict  = $strict;
+        $this->strict = $strict;
 
         foreach ($fieldDescriptors as $fieldDescriptor) {
             $this->addFieldDescriptor($fieldDescriptor);
         }
     }
 
-    public function withPattern($pattern)
+    /**
+     * @param string|FieldDescriptorInterface|mixed $fieldDescriptor
+     */
+    private function addFieldDescriptor($fieldDescriptor): void
     {
-        $new = new self($pattern, array(), $this->strict);
+        if (!$fieldDescriptor instanceof FieldDescriptorInterface) {
+            if (!is_string($fieldDescriptor)) {
+                throw InvalidFieldDescriptorCharacterException::create($fieldDescriptor);
+            }
+
+            $fieldDescriptor = new SimpleFieldDescriptor($fieldDescriptor);
+        }
+
+        $this->validateFieldDescriptor($fieldDescriptor);
+
+        $this->fieldDescriptors[$fieldDescriptor->getCharacter()] = $fieldDescriptor;
+    }
+
+    private function validateFieldDescriptor(FieldDescriptorInterface $fieldDescriptor): void
+    {
+        $character = $fieldDescriptor->getCharacter();
+
+        if (1 !== strlen($character)) {
+            throw InvalidFieldDescriptorCharacterException::create($character);
+        }
+    }
+
+    public function withPattern(string $pattern): self
+    {
+        $new = new self($pattern, [], $this->strict);
 
         $new->fieldDescriptors = $this->fieldDescriptors;
 
         return $new;
     }
 
-    public function withFieldDescriptor($fieldDescriptor)
+    public function withFieldDescriptor(string $fieldDescriptor): self
     {
-        $new = new self($this->pattern, array(), $this->strict);
+        $new = new self($this->pattern, [], $this->strict);
 
         $new->fieldDescriptors = $this->fieldDescriptors;
         $new->addFieldDescriptor($fieldDescriptor);
@@ -50,17 +89,17 @@ final class StringFormatter implements FormatterInterface
         return $new;
     }
 
-    public function format(array $values)
+    public function format(array $values): string
     {
-        $pattern = (string) $this->pattern;
-        $result  = '';
+        $pattern = $this->pattern;
+        $result = '';
 
-        $previousValue           = null;
-        $previousCharacter       = null;
+        $previousValue = null;
+        $previousCharacter = null;
         $previousFormatCharacter = null;
 
         while ('' !== $pattern) {
-            if (preg_match('/^%(.{1})/', $pattern, $matches)) {
+            if ((bool) preg_match('/^%(.{1})/', $pattern, $matches)) {
                 $value = $this->handle(
                     $matches[1],
                     new FormatContext(
@@ -72,7 +111,7 @@ final class StringFormatter implements FormatterInterface
                     )
                 );
 
-                $previousValue     = $value;
+                $previousValue = $value;
                 $previousCharacter = $matches[1];
 
                 $result .= $value;
@@ -103,15 +142,15 @@ final class StringFormatter implements FormatterInterface
         return $result;
     }
 
-    private function handle($character, FormatContext $formatContext)
+    private function handle(string $character, FormatContext $formatContext): string
     {
         $descriptor = $this->getFieldDescriptor($character);
-        $value      = $descriptor->getValue($formatContext);
+        $value = $descriptor->getValue($formatContext);
 
         return $descriptor->getReplacement($value, $formatContext);
     }
 
-    private function getFieldDescriptor($character)
+    private function getFieldDescriptor(string $character): FieldDescriptorInterface
     {
         if (isset($this->fieldDescriptors[$character])) {
             return $this->fieldDescriptors[$character];
@@ -122,25 +161,5 @@ final class StringFormatter implements FormatterInterface
         }
 
         throw MissingFieldDescriptorException::create($character);
-    }
-
-    private function addFieldDescriptor($fieldDescriptor)
-    {
-        if (!$fieldDescriptor instanceof FieldDescriptorInterface) {
-            $fieldDescriptor = new SimpleFieldDescriptor($fieldDescriptor);
-        }
-
-        $this->validateFieldDescriptor($fieldDescriptor);
-
-        $this->fieldDescriptors[(string) $fieldDescriptor->getCharacter()] = $fieldDescriptor;
-    }
-
-    private function validateFieldDescriptor(FieldDescriptorInterface $fieldDescriptor)
-    {
-        $character = $fieldDescriptor->getCharacter();
-
-        if (!is_string($character) || 1 !== strlen($character)) {
-            throw InvalidFieldDescriptorCharacterException::create($character);
-        }
     }
 }
