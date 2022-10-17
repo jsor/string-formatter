@@ -8,18 +8,14 @@ use Jsor\StringFormatter\FormatContext;
 
 final class StaticValueFieldDescriptor implements FieldDescriptorInterface
 {
-    /**
-     * @var FieldDescriptorInterface
-     */
-    private $descriptor;
+    private FieldDescriptorInterface $descriptor;
 
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
 
-    public function __construct(FieldDescriptorInterface $descriptor, string $value)
-    {
+    public function __construct(
+        FieldDescriptorInterface $descriptor,
+        string $value,
+    ) {
         $this->descriptor = $descriptor;
         $this->value = $value;
     }
@@ -34,8 +30,10 @@ final class StaticValueFieldDescriptor implements FieldDescriptorInterface
         return $this->value;
     }
 
-    public function getReplacement(string $value, FormatContext $context): string
-    {
+    public function getReplacement(
+        string $value,
+        FormatContext $context,
+    ): string {
         return $this->descriptor->getReplacement($value, $context);
     }
 }

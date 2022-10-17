@@ -13,20 +13,11 @@ use Jsor\StringFormatter\FieldDescriptor\ValueAliasFieldDescriptor;
 
 final class NameFormatter implements FormatterInterface
 {
-    /**
-     * @var string
-     */
-    private $locale;
+    private string $locale;
 
-    /**
-     * @var string|null
-     */
-    private $pattern;
+    private ?string $pattern;
 
-    /**
-     * @var StringFormatter|null
-     */
-    private $stringFormatter;
+    private ?StringFormatter $stringFormatter = null;
 
     public function __construct(string $locale, string $pattern = null)
     {
@@ -48,7 +39,6 @@ final class NameFormatter implements FormatterInterface
         $locale = $this->locale;
         $pattern = $this->pattern;
 
-        /** @var LocaleData $localeData */
         $localeData = LocaleData::getInstance();
 
         if (null === $pattern) {
@@ -63,49 +53,49 @@ final class NameFormatter implements FormatterInterface
                 [
                     'family_name',
                     'family_names',
-                ]
+                ],
             ),
             new ValueAliasFieldDescriptor(
                 new SimpleFieldDescriptor('F'),
                 [
                     'family_name_in_uppercase',
                     'family_names_in_uppercase',
-                ]
+                ],
             ),
             new ValueAliasFieldDescriptor(
                 new SimpleFieldDescriptor('g'),
                 [
                     'given_name',
                     'given_names',
-                ]
+                ],
             ),
             new ValueAliasFieldDescriptor(
                 new SimpleFieldDescriptor('G'),
                 [
                     'given_initial',
                     'given_initials',
-                ]
+                ],
             ),
             new ValueAliasFieldDescriptor(
                 new SimpleFieldDescriptor('l'),
                 [
                     'given_name_with_latin_letters',
                     'given_names_with_latin_letters',
-                ]
+                ],
             ),
             new ValueAliasFieldDescriptor(
                 new SimpleFieldDescriptor('o'),
                 [
                     'other_shorter_name',
                     'other_shorter_names',
-                ]
+                ],
             ),
             new ValueAliasFieldDescriptor(
                 new SimpleFieldDescriptor('m'),
                 [
                     'additional_given_names',
                     'additional_given_name',
-                ]
+                ],
             ),
             new ValueAliasFieldDescriptor(
                 new SimpleFieldDescriptor('M'),
@@ -114,14 +104,14 @@ final class NameFormatter implements FormatterInterface
                     'initials_for_additional_given_names',
                     'initial_for_additional_given_name',
                     'initial_for_additional_given_names',
-                ]
+                ],
             ),
             new ValueAliasFieldDescriptor(
                 new SimpleFieldDescriptor('p'),
                 [
                     'profession',
                     'professions',
-                ]
+                ],
             ),
             new ChoiceFieldDescriptor(
                 new ChoiceFieldDescriptor(
@@ -130,7 +120,7 @@ final class NameFormatter implements FormatterInterface
                         [
                             'salutation',
                             'salutations',
-                        ]
+                        ],
                     ),
                     [
                         1 => 'name_gen',
@@ -143,40 +133,40 @@ final class NameFormatter implements FormatterInterface
                      * @param mixed $value
                      */
                     static function ($value) {
-                        if (\is_numeric($value)) {
+                        if (is_numeric($value)) {
                             return null;
                         }
 
                         return $value;
-                    }
+                    },
                 ),
                 static function () use ($locale, $localeData): array {
                     return $localeData->getNameData($locale);
-                }
+                },
             ),
             new ValueAliasFieldDescriptor(
                 new SimpleFieldDescriptor('s'),
                 [
                     'full_salutation',
                     'full_salutations',
-                ]
+                ],
             ),
             new ValueAliasFieldDescriptor(
                 new SimpleFieldDescriptor('S'),
                 [
                     'abbreviated_salutation',
                     'abbreviated_salutations',
-                ]
+                ],
             ),
             new ConditionalValueFieldDescriptor(
                 new StaticValueFieldDescriptor(
                     new SimpleFieldDescriptor('t'),
-                    ' '
-                )
+                    ' ',
+                ),
             ),
             new StaticValueFieldDescriptor(
                 new SimpleFieldDescriptor('%'),
-                '%'
+                '%',
             ),
         ]);
     }

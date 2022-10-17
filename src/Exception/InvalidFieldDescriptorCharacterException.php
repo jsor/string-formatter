@@ -6,19 +6,18 @@ namespace Jsor\StringFormatter\Exception;
 
 use LogicException;
 
+use function gettype;
+
 class InvalidFieldDescriptorCharacterException extends LogicException
 {
-    /**
-     * @param mixed $character
-     */
-    public static function create($character): self
+    public static function create(mixed $character): self
     {
         return new self(
-            \sprintf(
+            sprintf(
                 'A field descriptor character must be a string consisting of single character, got %s (%s).',
-                \json_encode($character),
-                \json_encode(\gettype($character))
-            )
+                json_encode($character, JSON_THROW_ON_ERROR),
+                json_encode(gettype($character), JSON_THROW_ON_ERROR),
+            ),
         );
     }
 }

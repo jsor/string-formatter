@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jsor\StringFormatter;
 
 use PHPUnit\Framework\TestCase;
@@ -57,12 +59,12 @@ class NameFormatterTest extends TestCase
 
         $name = $formatter->format($values);
 
-        $parts = \array_merge($values, [
+        $parts = array_merge($values, [
             'd' => 'Mr.',
             't' => ' ',
         ]);
 
-        self::assertSame(\implode('', $parts), $name);
+        self::assertSame(implode('', $parts), $name);
     }
 
     /**
@@ -89,12 +91,12 @@ class NameFormatterTest extends TestCase
 
         $name = $formatter->format($values);
 
-        $parts = \array_merge($values, [
+        $parts = array_merge($values, [
             'salutation' => 'Mr.',
             't' => ' ',
         ]);
 
-        self::assertSame(\implode('', $parts), $name);
+        self::assertSame(implode('', $parts), $name);
     }
 
     /**
@@ -140,7 +142,7 @@ class NameFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_silenty_ignores_unknown_custom_salutation_lists_index(): void
+    public function it_silently_ignores_unknown_custom_salutation_lists_index(): void
     {
         $values = [
             'd' => 10,

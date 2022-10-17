@@ -8,10 +8,7 @@ use Jsor\StringFormatter\FormatContext;
 
 final class ConditionalValueFieldDescriptor implements FieldDescriptorInterface
 {
-    /**
-     * @var FieldDescriptorInterface
-     */
-    private $descriptor;
+    private FieldDescriptorInterface $descriptor;
 
     public function __construct(FieldDescriptorInterface $descriptor)
     {

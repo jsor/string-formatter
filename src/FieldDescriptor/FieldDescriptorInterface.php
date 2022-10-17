@@ -12,5 +12,8 @@ interface FieldDescriptorInterface
 
     public function getValue(FormatContext $context): string;
 
-    public function getReplacement(string $value, FormatContext $context): string;
+    public function getReplacement(
+        string $value,
+        FormatContext $context,
+    ): string;
 }

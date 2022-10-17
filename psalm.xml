@@ -1,24 +1,15 @@
 <?xml version="1.0"?>
 <psalm
-    xmlns="https://getpsalm.org/schema/config"
+    errorLevel="1"
+    resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-    totallyTyped="true"
-    allowPhpStormGenerics="true"
 >
     <projectFiles>
-        <directory name="src"/>
-        <directory name="tests"/>
+        <directory name="src" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
     </projectFiles>
-
-    <issueHandlers>
-        <PropertyNotSetInConstructor>
-            <errorLevel type="suppress">
-                <directory name="tests"/>
-            </errorLevel>
-        </PropertyNotSetInConstructor>
-    </issueHandlers>
-    <plugins>
-        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
-    </plugins>
 </psalm>

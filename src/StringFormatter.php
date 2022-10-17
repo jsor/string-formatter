@@ -9,22 +9,19 @@ use Jsor\StringFormatter\Exception\MissingFieldDescriptorException;
 use Jsor\StringFormatter\FieldDescriptor\FieldDescriptorInterface;
 use Jsor\StringFormatter\FieldDescriptor\SimpleFieldDescriptor;
 
+use function is_string;
+use function strlen;
+
 final class StringFormatter implements FormatterInterface
 {
-    /**
-     * @var string
-     */
-    private $pattern;
+    private string $pattern;
 
     /**
      * @var FieldDescriptorInterface[]
      */
-    private $fieldDescriptors = [];
+    private array $fieldDescriptors = [];
 
-    /**
-     * @var bool
-     */
-    private $strict;
+    private bool $strict;
 
     /**
      * @param array<string|FieldDescriptorInterface> $fieldDescriptors
@@ -32,7 +29,7 @@ final class StringFormatter implements FormatterInterface
     public function __construct(
         string $pattern,
         array $fieldDescriptors = [],
-        bool $strict = false
+        bool $strict = false,
     ) {
         $this->pattern = $pattern;
         $this->strict = $strict;
@@ -45,10 +42,10 @@ final class StringFormatter implements FormatterInterface
     /**
      * @param string|FieldDescriptorInterface|mixed $fieldDescriptor
      */
-    private function addFieldDescriptor($fieldDescriptor): void
+    private function addFieldDescriptor(mixed $fieldDescriptor): void
     {
         if (!$fieldDescriptor instanceof FieldDescriptorInterface) {
-            if (!\is_string($fieldDescriptor)) {
+            if (!is_string($fieldDescriptor)) {
                 throw InvalidFieldDescriptorCharacterException::create($fieldDescriptor);
             }
 
@@ -64,7 +61,7 @@ final class StringFormatter implements FormatterInterface
     {
         $character = $fieldDescriptor->getCharacter();
 
-        if (1 !== \strlen($character)) {
+        if (1 !== strlen($character)) {
             throw InvalidFieldDescriptorCharacterException::create($character);
         }
     }
@@ -98,7 +95,7 @@ final class StringFormatter implements FormatterInterface
         $previousFormatCharacter = null;
 
         while ('' !== $pattern) {
-            if ((bool) \preg_match('/^%(.{1})/', $pattern, $matches)) {
+            if (preg_match('/^%(.{1})/', $pattern, $matches)) {
                 $value = $this->handle(
                     $matches[1],
                     new FormatContext(
@@ -106,15 +103,15 @@ final class StringFormatter implements FormatterInterface
                         $this->strict,
                         $previousValue,
                         $previousCharacter,
-                        $previousFormatCharacter
-                    )
+                        $previousFormatCharacter,
+                    ),
                 );
 
                 $previousValue = $value;
                 $previousCharacter = $matches[1];
 
                 $result .= $value;
-                $pattern = \substr($pattern, 2);
+                $pattern = substr($pattern, 2);
             }
 
             // Single trailing %
@@ -122,7 +119,7 @@ final class StringFormatter implements FormatterInterface
                 break;
             }
 
-            $pos = \strpos($pattern, '%');
+            $pos = strpos($pattern, '%');
 
             // No more %
             if (false === $pos) {
@@ -131,10 +128,10 @@ final class StringFormatter implements FormatterInterface
             }
 
             if (0 !== $pos) {
-                $previousFormatCharacter = \substr($pattern, $pos - 1, 1);
+                $previousFormatCharacter = $pattern[$pos - 1];
 
-                $result .= \substr($pattern, 0, $pos);
-                $pattern = \substr($pattern, $pos);
+                $result .= substr($pattern, 0, $pos);
+                $pattern = substr($pattern, $pos);
             }
         }
 

@@ -4,32 +4,22 @@ declare(strict_types=1);
 
 namespace Jsor\StringFormatter;
 
+use function array_key_exists;
+
 final class FormatContext
 {
     /**
      * @var array<string, mixed>
      */
-    private $values;
+    private array $values;
 
-    /**
-     * @var bool
-     */
-    private $strict;
+    private bool $strict;
 
-    /**
-     * @var string|null
-     */
-    private $previousValue;
+    private ?string $previousValue;
 
-    /**
-     * @var string|null
-     */
-    private $previousCharacter;
+    private ?string $previousCharacter;
 
-    /**
-     * @var string|null
-     */
-    private $previousFormatCharacter;
+    private ?string $previousFormatCharacter;
 
     /**
      * @param array<string, mixed> $values
@@ -39,7 +29,7 @@ final class FormatContext
         bool $strict,
         ?string $previousValue,
         ?string $previousCharacter,
-        ?string $previousFormatCharacter
+        ?string $previousFormatCharacter,
     ) {
         $this->values = $values;
         $this->strict = $strict;
@@ -50,19 +40,12 @@ final class FormatContext
 
     public function hasValue(string $key): bool
     {
-        return \array_key_exists($key, $this->values);
+        return array_key_exists($key, $this->values);
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getValue(string $key)
+    public function getValue(string $key): mixed
     {
-        if (!isset($this->values[$key])) {
-            return null;
-        }
-
-        return $this->values[$key];
+        return $this->values[$key] ?? null;
     }
 
     public function isStrict(): bool

@@ -9,10 +9,7 @@ use Jsor\StringFormatter\FormatContext;
 
 final class RequiredValueFieldDescriptor implements FieldDescriptorInterface
 {
-    /**
-     * @var FieldDescriptorInterface
-     */
-    private $descriptor;
+    private FieldDescriptorInterface $descriptor;
 
     public function __construct(FieldDescriptorInterface $descriptor)
     {

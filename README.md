@@ -30,11 +30,11 @@ a locale by the given name parts.
 ```php
 use Jsor\NameFormatter;
 
-$nameParts = array(
+$nameParts = [
     'given_name' => 'John',
     'family_name' => 'Doe',
     'salutation' => 2 // name_mr
-);
+];
 
 $enUsFormatter = new NameFormatter('en_US');
 echo $enUsFormatter->format($nameParts)."\n";
@@ -60,11 +60,11 @@ A custom pattern can be passed as the second argument to the constructor.
 use Jsor\NameFormatter;
 
 $formatter = new NameFormatter('en_US', '%d%t%g%t%m%t%f');
-echo $formatter->format(array(
+echo $formatter->format([
     'given_name' => 'John',
     'family_name' => 'Doe',
     'salutation' => 'Mr.',
-));
+]);
 ```
 
 The above example will output:

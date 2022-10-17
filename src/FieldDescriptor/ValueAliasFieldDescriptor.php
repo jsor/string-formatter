@@ -8,21 +8,20 @@ use Jsor\StringFormatter\FormatContext;
 
 final class ValueAliasFieldDescriptor implements FieldDescriptorInterface
 {
-    /**
-     * @var FieldDescriptorInterface
-     */
-    private $descriptor;
+    private FieldDescriptorInterface $descriptor;
 
     /**
      * @var array<string>
      */
-    private $aliases;
+    private array $aliases;
 
     /**
      * @param array<string> $aliases
      */
-    public function __construct(FieldDescriptorInterface $descriptor, array $aliases)
-    {
+    public function __construct(
+        FieldDescriptorInterface $descriptor,
+        array $aliases,
+    ) {
         $this->descriptor = $descriptor;
         $this->aliases = $aliases;
     }
@@ -45,8 +44,10 @@ final class ValueAliasFieldDescriptor implements FieldDescriptorInterface
         return $this->descriptor->getValue($context);
     }
 
-    public function getReplacement(string $value, FormatContext $context): string
-    {
+    public function getReplacement(
+        string $value,
+        FormatContext $context,
+    ): string {
         return $this->descriptor->getReplacement($value, $context);
     }
 }

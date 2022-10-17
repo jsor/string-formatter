@@ -8,10 +8,7 @@ use Jsor\StringFormatter\FormatContext;
 
 final class SimpleFieldDescriptor implements FieldDescriptorInterface
 {
-    /**
-     * @var string
-     */
-    private $character;
+    private string $character;
 
     public function __construct(string $character)
     {

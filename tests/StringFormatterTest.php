@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jsor\StringFormatter;
 
 use Jsor\StringFormatter\Exception\InvalidFieldDescriptorCharacterException;
@@ -45,12 +47,12 @@ class StringFormatterTest extends TestCase
 
         $formatter = new StringFormatter(
             '%a %b %c %D %E %F',
-            \array_keys($values)
+            array_keys($values),
         );
 
         $string = $formatter->format($values);
 
-        self::assertSame(\implode(' ', $values), $string);
+        self::assertSame(implode(' ', $values), $string);
     }
 
     /**
@@ -97,7 +99,7 @@ class StringFormatterTest extends TestCase
         $this->expectException(InvalidFieldDescriptorCharacterException::class);
         $this->expectExceptionMessage('A field descriptor character must be a string consisting of single character, got null ("NULL").');
 
-        /** @psalm-suppress InvalidArgument */
+        /* @psalm-suppress InvalidArgument */
         new StringFormatter('', [
             null,
         ]);
@@ -121,10 +123,10 @@ class StringFormatterTest extends TestCase
      */
     public function it_throws_for_missing_field_descriptor_in_strict_mode(): void
     {
+        $formatter = new StringFormatter('%a', [], true);
+
         $this->expectException(MissingFieldDescriptorException::class);
         $this->expectExceptionMessage('Missing field description for character "a".');
-
-        $formatter = new StringFormatter('%a', [], true);
 
         $formatter->format([]);
     }
@@ -134,12 +136,12 @@ class StringFormatterTest extends TestCase
      */
     public function it_throws_for_missing_required_field_value(): void
     {
-        $this->expectException(MissingFieldValueException::class);
-        $this->expectExceptionMessage('The value for the field "a" is missing.');
-
         $formatter = new StringFormatter('%a', [
             new RequiredValueFieldDescriptor(new SimpleFieldDescriptor('a')),
         ], true);
+
+        $this->expectException(MissingFieldValueException::class);
+        $this->expectExceptionMessage('The value for the field "a" is missing.');
 
         $formatter->format([]);
     }
@@ -160,6 +162,7 @@ class StringFormatterTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider provideUnusualFormats
      */
     public function it_handles_unusual_formats(string $format, string $expected): void
@@ -214,6 +217,7 @@ class StringFormatterTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider provideFormatContexts
      *
      * @param array<string, string> $fields
@@ -246,7 +250,7 @@ class StringFormatterTest extends TestCase
                         $contexts[] = $context;
 
                         return $value;
-                    }
+                    },
                 );
 
             $descriptors[] = $mock;

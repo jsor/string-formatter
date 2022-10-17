@@ -6,12 +6,13 @@ namespace Jsor\StringFormatter\FieldDescriptor;
 
 use Jsor\StringFormatter\FormatContext;
 
+use function array_key_exists;
+use function call_user_func;
+use function is_callable;
+
 final class ChoiceFieldDescriptor implements FieldDescriptorInterface
 {
-    /**
-     * @var FieldDescriptorInterface
-     */
-    private $descriptor;
+    private FieldDescriptorInterface $descriptor;
 
     /**
      * @var array|callable
@@ -23,13 +24,10 @@ final class ChoiceFieldDescriptor implements FieldDescriptorInterface
      */
     private $defaultValueTranslator;
 
-    /**
-     * @param array|callable $choices
-     */
     public function __construct(
         FieldDescriptorInterface $descriptor,
-        $choices,
-        callable $defaultValueTranslator = null
+        callable|array $choices,
+        callable $defaultValueTranslator = null,
     ) {
         $this->descriptor = $descriptor;
         $this->choices = $choices;
@@ -47,12 +45,12 @@ final class ChoiceFieldDescriptor implements FieldDescriptorInterface
 
         $choices = $this->getChoices($value);
 
-        if (\array_key_exists($value, $choices)) {
+        if (array_key_exists($value, $choices)) {
             return (string) $choices[$value];
         }
 
-        if (\is_callable($this->defaultValueTranslator)) {
-            return (string) \call_user_func($this->defaultValueTranslator, $value);
+        if (is_callable($this->defaultValueTranslator)) {
+            return (string) call_user_func($this->defaultValueTranslator, $value);
         }
 
         return $value;
@@ -62,7 +60,7 @@ final class ChoiceFieldDescriptor implements FieldDescriptorInterface
     {
         $choices = $this->choices;
 
-        if (\is_callable($choices)) {
+        if (is_callable($choices)) {
             $choices = (array) $choices($value);
         }
 
